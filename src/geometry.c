@@ -132,6 +132,11 @@ struct Mesh regular_icosahedron(int subdivisions) {
     faces_to_length = 0;
   }
 
+  #undef vertex
+  #undef midpoint
+  #undef edge
+  #undef face
+
   memcpy(icosahedron.vertices, vertices_to, icosahedron.vertices_len);
   memcpy(icosahedron.faces, faces_to, icosahedron.faces_len);
 
