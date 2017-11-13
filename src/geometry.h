@@ -6,3 +6,5 @@ struct Mesh {
 };
 
 struct Mesh regular_icosahedron();
+
+void delete_mesh(struct Mesh mesh);

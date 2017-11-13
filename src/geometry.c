@@ -146,3 +146,8 @@ struct Mesh regular_icosahedron(int subdivisions) {
 
   return icosahedron;
 }
+
+void delete_mesh(struct Mesh mesh) {
+  free(mesh.vertices);
+  free(mesh.faces);
+}
