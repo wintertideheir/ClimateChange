@@ -5,6 +5,13 @@
 int windowX = 800;
 int windowY = 600;
 
+void framebufferSizeCallback(GLFWwindow *w, int x, int y)
+{
+  windowX = x;
+  windowY = y;
+  glViewport(0, 0, x, y);
+}
+
 void drawingBegin() {
   if(!glfwInit())
   {
@@ -39,6 +46,7 @@ void drawingBegin() {
   int sizex, sizey;
   glfwGetFramebufferSize(window, &sizex, &sizey);
   glViewport(0, 0, sizex, sizey);
+  glfwSetFramebufferSizeCallback(window, &framebufferSizeCallback);
 }
 
 void drawingLoop() {
