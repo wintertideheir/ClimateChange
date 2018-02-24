@@ -13,8 +13,8 @@ struct Mesh regular_icosahedron(int subdivisions) {
   struct Mesh icosahedron;
   icosahedron.vertices_len = ICOSAHEDRON_VERTICES(subdivisions);
   icosahedron.faces_len = ICOSAHEDRON_FACES(subdivisions);
-  icosahedron.vertices = malloc(icosahedron.vertices_len);
-  icosahedron.faces = malloc(icosahedron.faces_len);
+  icosahedron.vertices = malloc(sizeof(float) * 3 * icosahedron.vertices_len);
+  icosahedron.faces = malloc(sizeof(int) * 3 * icosahedron.faces_len);
 
   float golden_ratio = (1 + sqrtf(5)) / 2;
 
@@ -73,6 +73,8 @@ struct Mesh regular_icosahedron(int subdivisions) {
   int edge_map_length = 0;
   int edge_map[ICOSAHEDRON_EDGES(subdivisions)][3];
 
+  memset(&edge_map, 0, sizeof(edge_map));
+
   #define vertex(x, y, z) \
     (*vertices_to)[vertices_to_length][0] = x; \
     (*vertices_to)[vertices_to_length][1] = y; \
@@ -85,14 +87,17 @@ struct Mesh regular_icosahedron(int subdivisions) {
            ((*vertices_from)[from][2] + (*vertices_from)[to][2]) / 2); \
 
   #define edge(from, to, store) \
+    store = -1; \
     for (int v = 0; v < edge_map_length; v++) { \
-      if (edge_map[v][0] == from && \
-          edge_map[v][1] == to) { \
+      if ((edge_map[v][0] == from && \
+           edge_map[v][1] == to) || \
+          (edge_map[v][0] == to && \
+           edge_map[v][1] == from)) { \
         store = edge_map[v][2]; \
         edge_map[v][0] = edge_map[edge_map_length-1][0]; \
-        edge_map[v][0] = edge_map[edge_map_length-1][0]; \
-        edge_map[edge_map_length-1][0]; \
-        edge_map[edge_map_length-1][1]; \
+        edge_map[v][1] = edge_map[edge_map_length-1][1]; \
+        edge_map[edge_map_length-1][0] = 0; \
+        edge_map[edge_map_length-1][1] = 0; \
         edge_map_length--; \
         break; \
       } \
@@ -101,7 +106,7 @@ struct Mesh regular_icosahedron(int subdivisions) {
       edge_map[edge_map_length][0] = from; \
       edge_map[edge_map_length][1] = to; \
       midpoint(from, to); \
-      edge_map[edge_map_length][2] = vertices_to_length - 1; \
+      store = edge_map[edge_map_length][2] = vertices_to_length - 1; \
       edge_map_length++; \
     } \
 
@@ -122,6 +127,7 @@ struct Mesh regular_icosahedron(int subdivisions) {
       face(mid2, (*faces_from)[f][2], mid3);
       face(mid3, (*faces_from)[f][0], mid1);
     }
+
     float (*vertices_temp)[icosahedron.vertices_len][3] = vertices_from;
     int (*faces_temp)[icosahedron.faces_len][3] = faces_from;
     vertices_from = vertices_to;
@@ -137,8 +143,8 @@ struct Mesh regular_icosahedron(int subdivisions) {
   #undef edge
   #undef face
 
-  memcpy(icosahedron.vertices, vertices_to, icosahedron.vertices_len);
-  memcpy(icosahedron.faces, faces_to, icosahedron.faces_len);
+  memcpy(icosahedron.vertices, vertices_to, sizeof(float) * icosahedron.vertices_len);
+  memcpy(icosahedron.faces, faces_to, sizeof(int) * icosahedron.faces_len);
 
   #undef ICOSAHEDRON_VERTICES
   #undef ICOSAHEDRON_EDGES
