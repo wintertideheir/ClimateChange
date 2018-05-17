@@ -116,6 +116,11 @@ struct Mesh regular_icosahedron(int subdivisions) {
     (*faces_to)[faces_to_length][2] = p3; \
     faces_to_length++; \
 
+  #define old_vertex(v) \
+    vertex((*vertices_from)[v][0], \
+           (*vertices_from)[v][1], \
+           (*vertices_from)[v][2]); \
+
   for (int i = 0; i < subdivisions; i++) {
     for (int f = 0; f < ICOSAHEDRON_FACES(i); f++) {
       int mid1, mid2, mid3;
@@ -123,9 +128,12 @@ struct Mesh regular_icosahedron(int subdivisions) {
       edge((*faces_from)[f][1], (*faces_from)[f][2], mid2);
       edge((*faces_from)[f][2], (*faces_from)[f][0], mid3);
       face(mid1, mid2, mid3);
-      face(mid1, (*faces_from)[f][1], mid2);
-      face(mid2, (*faces_from)[f][2], mid3);
-      face(mid3, (*faces_from)[f][0], mid1);
+      old_vertex((*faces_from)[f][1]);
+      face(mid1, vertices_to_length, mid2);
+      old_vertex((*faces_from)[f][2]);
+      face(mid2, vertices_to_length, mid3);
+      old_vertex((*faces_from)[f][0]);
+      face(mid3, vertices_to_length, mid1);
     }
 
     float (*vertices_temp)[icosahedron.vertices_len][3] = vertices_from;
