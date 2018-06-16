@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-#define GLOBE_DETAIL 5
+#define GLOBE_DETAIL 1
 
 struct Mesh globe;
 
