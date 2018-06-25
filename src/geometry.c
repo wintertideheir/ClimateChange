@@ -54,6 +54,10 @@ struct Mesh regular_icosahedron(int subdivisions) {
      {0, 1, 8},
      {6, 8, 1}};
 
+  float radius = sqrtf(powf(original_vertices[0][0], 2) +
+                       powf(original_vertices[0][1], 2) +
+                       powf(original_vertices[0][2], 2));
+
   float vertices_1[icosahedron.vertices_len][3];
   float vertices_2[icosahedron.vertices_len][3];
   int faces_1[icosahedron.faces_len][3];
@@ -80,9 +84,11 @@ struct Mesh regular_icosahedron(int subdivisions) {
     vertices_to_length++; \
 
   #define midpoint(from, to) \
-    vertex(((*vertices_from)[from][0] + (*vertices_from)[to][0]) / 2, \
-           ((*vertices_from)[from][1] + (*vertices_from)[to][1]) / 2, \
-           ((*vertices_from)[from][2] + (*vertices_from)[to][2]) / 2); \
+    float x = ((*vertices_from)[from][0] + (*vertices_from)[to][0]) / 2; \
+    float y = ((*vertices_from)[from][1] + (*vertices_from)[to][1]) / 2; \
+    float z = ((*vertices_from)[from][2] + (*vertices_from)[to][2]) / 2; \
+    float length = sqrtf(powf(x, 2) + powf(y, 2) + powf(z, 2)); \
+    vertex(radius * x / length, radius * y / length, radius * z / length); \
 
   #define edge(from, to, store) \
     store = -1; \
