@@ -6,9 +6,9 @@
 
 struct Mesh regular_icosahedron(int subdivisions) {
 
-  #define ICOSAHEDRON_FACES(level) ((int) (20 * powf(level + 1, 2)))
-  #define ICOSAHEDRON_EDGES(level) ((int) (30 * powf(level + 1, 2)))
-  #define ICOSAHEDRON_VERTICES(level) ((int) (2 + (10 * powf(level + 1, 2))))
+  #define ICOSAHEDRON_FACES(level) ((int) (20 * powf(4, level)))
+  #define ICOSAHEDRON_EDGES(level) ((int) (30 * powf(4, level)))
+  #define ICOSAHEDRON_VERTICES(level) ((int) (2 + (10 * powf(4, level))))
 
   struct Mesh icosahedron;
   icosahedron.vertices_len = ICOSAHEDRON_VERTICES(subdivisions);
