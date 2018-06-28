@@ -12,6 +12,7 @@ GLint globe_viewUniform;
 GLint globe_projectionUniform;
 
 unsigned int globe_VBO;
+unsigned int globe_EBO;
 unsigned int globe_VAO;
 
 void generateShaders();

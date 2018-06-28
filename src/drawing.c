@@ -123,9 +123,12 @@ void drawingBegin() {
 
   glGenVertexArrays(1, &globe_VAO);
   glGenBuffers(1, &globe_VBO);
+  glGenBuffers(1, &globe_EBO);
   glBindVertexArray(globe_VAO);
   glBindBuffer(GL_ARRAY_BUFFER, globe_VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * globe.faces_len * 3 * 3, globe_mesh, GL_STATIC_DRAW);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, globe_EBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * globe.vertices_len * 3, globe.vertices, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * globe.faces_len * 3, globe.faces, GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
@@ -140,7 +143,7 @@ void drawingLoop() {
 
   glUseProgram(globeShaderProgram);
   glBindVertexArray(globe_VAO);
-  glDrawArrays(GL_TRIANGLES, 0, globe.faces_len * 3 * 3);
+  glDrawElements(GL_TRIANGLES, globe.faces_len * 3, GL_UNSIGNED_INT, 0);
 
   glfwSwapBuffers(window);
   glfwPollEvents();

@@ -6,15 +6,15 @@
 
 struct Mesh regular_icosahedron(int subdivisions) {
 
-  #define ICOSAHEDRON_FACES(level) ((int) (20 * powf(4, level)))
-  #define ICOSAHEDRON_EDGES(level) ((int) (30 * powf(4, level)))
-  #define ICOSAHEDRON_VERTICES(level) ((int) (2 + (10 * powf(4, level))))
+  #define ICOSAHEDRON_FACES(level) ((unsigned int) (20 * powf(4, level)))
+  #define ICOSAHEDRON_EDGES(level) ((unsigned int) (30 * powf(4, level)))
+  #define ICOSAHEDRON_VERTICES(level) ((unsigned int) (2 + (10 * powf(4, level))))
 
   struct Mesh icosahedron;
   icosahedron.vertices_len = ICOSAHEDRON_VERTICES(subdivisions);
   icosahedron.faces_len = ICOSAHEDRON_FACES(subdivisions);
   icosahedron.vertices = malloc(sizeof(float) * 3 * icosahedron.vertices_len);
-  icosahedron.faces = malloc(sizeof(int) * 3 * icosahedron.faces_len);
+  icosahedron.faces = malloc(sizeof(unsigned int) * 3 * icosahedron.faces_len);
 
   float golden_ratio = (1 + sqrtf(5)) / 2;
 
@@ -32,7 +32,7 @@ struct Mesh regular_icosahedron(int subdivisions) {
      { golden_ratio, 0, -1},
      {-golden_ratio, 0, -1}};
 
-  int original_faces[20][3] =
+  unsigned int original_faces[20][3] =
     {{4, 0, 5},
      {4, 5, 2},
      {4, 2, 10},
@@ -60,22 +60,22 @@ struct Mesh regular_icosahedron(int subdivisions) {
 
   float vertices_1[icosahedron.vertices_len][3];
   float vertices_2[icosahedron.vertices_len][3];
-  int faces_1[icosahedron.faces_len][3];
-  int faces_2[icosahedron.faces_len][3];
+  unsigned int faces_1[icosahedron.faces_len][3];
+  unsigned int faces_2[icosahedron.faces_len][3];
 
   memcpy(vertices_1, &original_vertices, sizeof(original_vertices));
   memcpy(faces_1, &original_faces, sizeof(original_faces));
 
   float (*vertices_from)[icosahedron.vertices_len][3] = &vertices_1;
   float (*vertices_to)[icosahedron.vertices_len][3] = &vertices_2;
-  int (*faces_from)[icosahedron.faces_len][3] = &faces_1;
-  int (*faces_to)[icosahedron.faces_len][3] = &faces_2;
+  unsigned int (*faces_from)[icosahedron.faces_len][3] = &faces_1;
+  unsigned int (*faces_to)[icosahedron.faces_len][3] = &faces_2;
 
   int vertices_to_length = 0;
   int faces_to_length = 0;
 
   int edge_map_length = 0;
-  int edge_map[ICOSAHEDRON_EDGES(subdivisions)][3];
+  unsigned int edge_map[ICOSAHEDRON_EDGES(subdivisions)][3];
 
   #define vertex(x, y, z) \
     (*vertices_to)[vertices_to_length][0] = x; \
@@ -141,7 +141,7 @@ struct Mesh regular_icosahedron(int subdivisions) {
     }
 
     float (*vertices_temp)[icosahedron.vertices_len][3] = vertices_from;
-    int (*faces_temp)[icosahedron.faces_len][3] = faces_from;
+    unsigned int (*faces_temp)[icosahedron.faces_len][3] = faces_from;
     vertices_from = vertices_to;
     vertices_to = vertices_temp;
     faces_from = faces_to;
@@ -156,7 +156,7 @@ struct Mesh regular_icosahedron(int subdivisions) {
   #undef face
 
   memcpy(icosahedron.vertices, vertices_from, sizeof(float) * 3 * icosahedron.vertices_len);
-  memcpy(icosahedron.faces, faces_from, sizeof(int) * 3 * icosahedron.faces_len);
+  memcpy(icosahedron.faces, faces_from, sizeof(unsigned int) * 3 * icosahedron.faces_len);
 
   #undef ICOSAHEDRON_VERTICES
   #undef ICOSAHEDRON_EDGES
