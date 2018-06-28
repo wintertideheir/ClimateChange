@@ -4,12 +4,17 @@
 #define M_PI_4 (M_PI / 4)
 #define M_PI_2 (M_PI / 2)
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <cglm/cglm.h>
 
 int windowX = 800;
 int windowY = 600;
+float viewf = 0.001; //Move 1 degree for every 1000 pixels
+float viewX = 0;
+float viewY = 0;
+enum ControlState {CONTROL_OBJECTS, CONTROL_VIEW} controlState = CONTROL_OBJECTS;
 
 mat4 view, projection;
 
@@ -21,6 +26,35 @@ void framebufferSizeCallback(GLFWwindow *w, int x, int y)
   glProgramUniformMatrix4fv(globeShaderProgram, globe_projectionUniform, 1,
                             GL_FALSE, (float*) projection);
   glViewport(0, 0, x, y);
+}
+
+void cursorPosCallback(GLFWwindow* window, double x, double y)
+{
+  viewX = fmod((viewX + (viewf * -x)), 360);
+  viewY = fmod((viewY + (viewf * y)), 360);
+  vec3 viewVec = {0, 0, 5};
+  glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
+  glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
+  glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
+}
+
+void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
+{
+  if (key == GLFW_KEY_A && action == GLFW_PRESS)
+  {
+    if (controlState == CONTROL_VIEW)
+    {
+      glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+      glfwSetCursorPosCallback(w, NULL);
+      controlState = CONTROL_OBJECTS;
+    }
+    else
+    {
+      glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+      glfwSetCursorPosCallback(w, cursorPosCallback);
+      controlState = CONTROL_VIEW;
+    }
+  }
 }
 
 void drawingBegin() {
@@ -53,6 +87,8 @@ void drawingBegin() {
             glewGetErrorString(glewStatus));
     earlyExit();
   }
+
+  glfwSetKeyCallback(window, keyCallback);
 
   generateShaders();
 
