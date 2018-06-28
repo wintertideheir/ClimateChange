@@ -17,8 +17,9 @@ void framebufferSizeCallback(GLFWwindow *w, int x, int y)
 {
   windowX = x;
   windowY = y;
-  glProgramUniform1i(globeShaderProgram, globe_windowXUniform, x);
-  glProgramUniform1i(globeShaderProgram, globe_windowYUniform, y);
+  glm_perspective(glm_rad(60), ((float) x) / ((float) y), 0.1, 100, projection);
+  glProgramUniformMatrix4fv(globeShaderProgram, globe_projectionUniform, 1,
+                            GL_FALSE, (float*) projection);
   glViewport(0, 0, x, y);
 }
 
@@ -55,16 +56,13 @@ void drawingBegin() {
 
   generateShaders();
 
-  glm_lookat((vec3){0, 0, 3}, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
-  glm_perspective(glm_rad(60), windowX / windowY, 0.1, 100, projection);
+  glm_lookat((vec3){0, 0, 5}, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
+  glm_perspective(glm_rad(60), ((float) windowX) / ((float) windowY), 0.1, 100,
+                  projection);
 
-  globe_windowXUniform = glGetUniformLocation(globeShaderProgram, "windowX");
-  globe_windowYUniform = glGetUniformLocation(globeShaderProgram, "windowY");
   globe_viewUniform = glGetUniformLocation(globeShaderProgram, "view");
   globe_projectionUniform = glGetUniformLocation(globeShaderProgram, "projection");
 
-  glProgramUniform1f(globeShaderProgram, globe_windowXUniform, windowX);
-  glProgramUniform1i(globeShaderProgram, globe_windowYUniform, windowY);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
                             GL_FALSE, (float*) view);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_projectionUniform, 1,
