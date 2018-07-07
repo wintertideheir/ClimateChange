@@ -15,6 +15,7 @@ float viewf = 0.001; //Move 1 degree for every 1000 pixels
 float viewX = 0;
 float viewY = 0;
 enum ControlState {CONTROL_OBJECTS, CONTROL_VIEW} controlState = CONTROL_OBJECTS;
+vec3 light = {0, 0, 10};
 
 mat4 view, projection;
 
@@ -96,9 +97,14 @@ void drawingBegin() {
   glm_perspective(glm_rad(60), ((float) windowX) / ((float) windowY), 0.1, 100,
                   projection);
 
+  globe_radiusUniform = glGetUniformLocation(globeShaderProgram, "radius");
+  globe_lightUniform = glGetUniformLocation(globeShaderProgram, "light");
   globe_viewUniform = glGetUniformLocation(globeShaderProgram, "view");
   globe_projectionUniform = glGetUniformLocation(globeShaderProgram, "projection");
 
+  glProgramUniform1f(globeShaderProgram, globe_radiusUniform, icosahedron_radius);
+  glProgramUniform3f(globeShaderProgram, globe_lightUniform,
+                     light[0], light[1], light[2]);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
                             GL_FALSE, (float*) view);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_projectionUniform, 1,

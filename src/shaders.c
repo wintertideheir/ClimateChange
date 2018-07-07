@@ -76,19 +76,27 @@ void generateShaders()
   const GLchar* globeVertexShaderCode =
   "#version 330 core\n"
   "layout (location = 0) in vec3 pos;\n"
+  "out vec3 outPos;\n"
   "uniform mat4 view;\n"
   "uniform mat4 projection;\n"
   "void main()\n"
   "{\n"
+  "    outPos = pos;\n"
   "    gl_Position = projection * view * vec4(pos, 1.0);\n"
   "}\n";
 
   const GLchar* globeFragmentShaderCode =
   "#version 330 core\n"
+  "in vec3 outPos;\n"
   "out vec4 color;\n"
+  "uniform float radius;\n"
+  "uniform vec3 light;\n"
   "void main()\n"
   "{\n"
-  "    color = vec4(vec3(1.0), 0.0);\n"
+  "    float ambient = 0.1;\n"
+  "    float diffuse = max(dot(outPos / radius, normalize(light - outPos)), 0.0);\n"
+  "    float brightness = ambient + diffuse;\n"
+  "    color = vec4(vec3(brightness), 0.0);\n"
   "}\n";
 
   const GLchar* globeProgramCode[] =

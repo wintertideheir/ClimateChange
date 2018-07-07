@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-struct Mesh regular_icosahedron(int subdivisions) {
+struct Mesh geodesic_icosahedron(int subdivisions) {
 
   #define ICOSAHEDRON_FACES(level) ((unsigned int) (20 * powf(4, level)))
   #define ICOSAHEDRON_EDGES(level) ((unsigned int) (30 * powf(4, level)))
@@ -54,9 +54,9 @@ struct Mesh regular_icosahedron(int subdivisions) {
      {0, 1, 8},
      {6, 8, 1}};
 
-  float radius = sqrtf(powf(original_vertices[0][0], 2) +
-                       powf(original_vertices[0][1], 2) +
-                       powf(original_vertices[0][2], 2));
+  icosahedron_radius = sqrtf(powf(original_vertices[0][0], 2) +
+                             powf(original_vertices[0][1], 2) +
+                             powf(original_vertices[0][2], 2));
 
   float vertices_1[icosahedron.vertices_len][3];
   float vertices_2[icosahedron.vertices_len][3];
@@ -88,7 +88,9 @@ struct Mesh regular_icosahedron(int subdivisions) {
     float y = ((*vertices_from)[from][1] + (*vertices_from)[to][1]) / 2; \
     float z = ((*vertices_from)[from][2] + (*vertices_from)[to][2]) / 2; \
     float length = sqrtf(powf(x, 2) + powf(y, 2) + powf(z, 2)); \
-    vertex(radius * x / length, radius * y / length, radius * z / length); \
+    vertex(icosahedron_radius * x / length, \
+           icosahedron_radius * y / length, \
+           icosahedron_radius * z / length); \
 
   #define edge(from, to, store) \
     store = -1; \

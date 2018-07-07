@@ -8,6 +8,8 @@ GLFWwindow* window;
 
 GLuint globeShaderProgram;
 
+GLint globe_radiusUniform;
+GLint globe_lightUniform;
 GLint globe_viewUniform;
 GLint globe_projectionUniform;
 

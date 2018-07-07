@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int main(int argc, char const *argv[]) {
-  globe = regular_icosahedron(GLOBE_DETAIL);
+  globe = geodesic_icosahedron(GLOBE_DETAIL);
   drawingBegin();
   while(!drawingShouldClose()) {
     drawingLoop();
