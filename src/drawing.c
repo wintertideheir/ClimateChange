@@ -37,6 +37,8 @@ void cursorPosCallback(GLFWwindow* window, double x, double y)
   glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
   glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
   glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
+  glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
+                            GL_FALSE, (float*) view);
 }
 
 void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
@@ -97,12 +99,10 @@ void drawingBegin() {
   glm_perspective(glm_rad(60), ((float) windowX) / ((float) windowY), 0.1, 100,
                   projection);
 
-  globe_radiusUniform = glGetUniformLocation(globeShaderProgram, "radius");
   globe_lightUniform = glGetUniformLocation(globeShaderProgram, "light");
   globe_viewUniform = glGetUniformLocation(globeShaderProgram, "view");
   globe_projectionUniform = glGetUniformLocation(globeShaderProgram, "projection");
 
-  glProgramUniform1f(globeShaderProgram, globe_radiusUniform, icosahedron_radius);
   glProgramUniform3f(globeShaderProgram, globe_lightUniform,
                      light[0], light[1], light[2]);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,

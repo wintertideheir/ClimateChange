@@ -89,12 +89,11 @@ void generateShaders()
   "#version 330 core\n"
   "in vec3 outPos;\n"
   "out vec4 color;\n"
-  "uniform float radius;\n"
   "uniform vec3 light;\n"
   "void main()\n"
   "{\n"
   "    float ambient = 0.1;\n"
-  "    float diffuse = max(dot(outPos / radius, normalize(light - outPos)), 0.0);\n"
+  "    float diffuse = max(dot(outPos, normalize(light - outPos)), 0.0);\n"
   "    float brightness = ambient + diffuse;\n"
   "    color = vec4(vec3(brightness), 0.0);\n"
   "}\n";

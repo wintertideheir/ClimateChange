@@ -19,44 +19,41 @@ struct Mesh geodesic_icosahedron(int subdivisions) {
   float golden_ratio = (1 + sqrtf(5)) / 2;
 
   float original_vertices[12][3] =
-    {{0,  1,  golden_ratio},
-     {0, -1,  golden_ratio},
-     {0,  1, -golden_ratio},
-     {0, -1, -golden_ratio},
-     { 1, golden_ratio,  0},
-     {-1, golden_ratio,  0},
-     { 1, -golden_ratio, 0},
-     {-1, -golden_ratio, 0},
-     { golden_ratio, 0,  1},
-     {-golden_ratio, 0,  1},
-     { golden_ratio, 0, -1},
-     {-golden_ratio, 0, -1}};
+    {{ 0.000000, -1.000000,  0.000000},
+     { 0.723600, -0.447215,  0.525720},
+     {-0.276385, -0.447215,  0.850640},
+     {-0.894425, -0.447215,  0.000000},
+     {-0.276385, -0.447215, -0.850640},
+     { 0.723600, -0.447215, -0.525720},
+     { 0.276385,  0.447215,  0.850640},
+     {-0.723600,  0.447215,  0.525720},
+     {-0.723600,  0.447215, -0.525720},
+     { 0.276385,  0.447215, -0.850640},
+     { 0.894425,  0.447215,  0.000000},
+     { 0.000000,  1.000000,  0.000000}};
+
 
   unsigned int original_faces[20][3] =
-    {{4, 0, 5},
-     {4, 5, 2},
-     {4, 2, 10},
-     {4, 10, 8},
-     {4, 8, 0},
-     {9, 0, 5},
-     {9, 5, 11},
-     {9, 1, 7},
-     {9, 7, 11},
-     {9, 0, 1},
-     {3, 11, 2},
-     {3, 2, 10},
-     {3, 10, 6},
-     {3, 6, 7},
-     {3, 7, 11},
-     {11, 2, 5},
-     {10, 6, 8},
-     {6, 1, 7},
-     {0, 1, 8},
-     {6, 8, 1}};
-
-  icosahedron_radius = sqrtf(powf(original_vertices[0][0], 2) +
-                             powf(original_vertices[0][1], 2) +
-                             powf(original_vertices[0][2], 2));
+    {{1,  0,  5},
+     {0,  1,  2},
+     {0,  2,  3},
+     {0,  3,  4},
+     {0,  4,  5},
+     {1,  5,  10},
+     {2,  1,  6},
+     {3,  2,  7},
+     {4,  3,  8},
+     {5,  4,  9},
+     {1,  10, 6},
+     {2,  6,  7},
+     {3,  7,  8},
+     {4,  8,  9},
+     {5,  9, 10},
+     {6,  10, 11},
+     {7,  6,  11},
+     {8,  7,  11},
+     {9, 8,  11},
+     {10, 9, 11}};
 
   float vertices_1[icosahedron.vertices_len][3];
   float vertices_2[icosahedron.vertices_len][3];
@@ -88,9 +85,7 @@ struct Mesh geodesic_icosahedron(int subdivisions) {
     float y = ((*vertices_from)[from][1] + (*vertices_from)[to][1]) / 2; \
     float z = ((*vertices_from)[from][2] + (*vertices_from)[to][2]) / 2; \
     float length = sqrtf(powf(x, 2) + powf(y, 2) + powf(z, 2)); \
-    vertex(icosahedron_radius * x / length, \
-           icosahedron_radius * y / length, \
-           icosahedron_radius * z / length); \
+    vertex(x / length, y / length, z / length);
 
   #define edge(from, to, store) \
     store = -1; \

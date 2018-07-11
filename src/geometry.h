@@ -5,7 +5,5 @@ struct Mesh {
   unsigned int (*faces)[3];
 };
 
-float icosahedron_radius;
-
 struct Mesh geodesic_icosahedron();
 void delete_mesh(struct Mesh mesh);
