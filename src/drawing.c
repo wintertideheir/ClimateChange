@@ -11,9 +11,11 @@
 
 int windowX = 800;
 int windowY = 600;
-float viewf = 0.001; //Move 1 degree for every 1000 pixels
+float viewf = 0.1; //Move 1 degree for every 10 pixels
 float viewX = 0;
 float viewY = 0;
+double lastX = 0;
+double lastY = 0;
 enum ControlState {CONTROL_OBJECTS, CONTROL_VIEW} controlState = CONTROL_OBJECTS;
 vec3 light = {0, 0, 10};
 
@@ -31,8 +33,10 @@ void framebufferSizeCallback(GLFWwindow *w, int x, int y)
 
 void cursorPosCallback(GLFWwindow* window, double x, double y)
 {
-  viewX = fmod((viewX + (viewf * -x)), 360);
-  viewY = fmod((viewY + (viewf * y)), 360);
+  viewX = fmod((viewX + (viewf * (lastX - x))), 360);
+  viewY = fmin(fmax(viewY + (viewf * (lastY - y)), -90), 90);
+  lastX = x;
+  lastY = y;
   vec3 viewVec = {0, 0, 5};
   glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
   glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
