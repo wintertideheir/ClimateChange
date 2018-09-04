@@ -47,7 +47,7 @@ void cursorPosCallback(GLFWwindow* window, double x, double y)
 
 void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
 {
-  if (key == GLFW_KEY_A && action == GLFW_PRESS)
+  if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
   {
     if (controlState == CONTROL_VIEW)
     {
@@ -57,6 +57,11 @@ void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
     }
     else
     {
+      double x;
+      double y;
+      glfwGetCursorPos(w, &x, &y);
+      lastX = x;
+      lastY = y;
       glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
       glfwSetCursorPosCallback(w, cursorPosCallback);
       controlState = CONTROL_VIEW;
