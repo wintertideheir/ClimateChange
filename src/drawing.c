@@ -124,18 +124,6 @@ void drawingBegin() {
   glViewport(0, 0, sizex, sizey);
   glfwSetFramebufferSizeCallback(window, &framebufferSizeCallback);
 
-  float globe_mesh[globe.faces_len][3][3];
-  for (int face = 0; face < globe.faces_len; face++)
-  {
-    for (int i = 0; i < 3; i++)
-    {
-      for (int k = 0; k < 3; k++)
-      {
-        globe_mesh[face][i][k] = globe.vertices[globe.faces[face][i]][k];
-      }
-    }
-  }
-
   glGenVertexArrays(1, &globe_VAO);
   glGenBuffers(1, &globe_VBO);
   glGenBuffers(1, &globe_EBO);
