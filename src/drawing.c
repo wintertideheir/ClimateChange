@@ -100,6 +100,8 @@ void drawingBegin() {
     earlyExit();
   }
 
+  glEnable(GL_DEPTH_TEST);
+
   glfwSetKeyCallback(window, keyCallback);
 
   generateShaders();
@@ -142,7 +144,7 @@ void drawingBegin() {
 
 void drawingLoop() {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glUseProgram(globeShaderProgram);
   glBindVertexArray(globe_VAO);
