@@ -46,6 +46,17 @@ void cursorPosCallback(GLFWwindow* window, double x, double y)
                             GL_FALSE, (float*) view);
 }
 
+void scrollCallback(GLFWwindow* window, double x, double y)
+{
+  zoom = fmax(fmin((float) (zoom - (y * 0.1)), 3), 1.2);
+  vec3 viewVec = {0, 0, zoom};
+  glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
+  glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
+  glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
+  glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
+                            GL_FALSE, (float*) view);
+}
+
 void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
 {
   if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
@@ -54,6 +65,7 @@ void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
     {
       glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
       glfwSetCursorPosCallback(w, NULL);
+      glfwSetScrollCallback(w, NULL);
       controlState = CONTROL_OBJECTS;
     }
     else
@@ -65,20 +77,10 @@ void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
       lastY = y;
       glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
       glfwSetCursorPosCallback(w, cursorPosCallback);
+      glfwSetScrollCallback(w, scrollCallback);
       controlState = CONTROL_VIEW;
     }
   }
-}
-
-void scrollCallback(GLFWwindow* window, double x, double y)
-{
-  zoom = fmax(fmin((float) (zoom + (y * 0.1)), 3), 1.2);
-  vec3 viewVec = {0, 0, zoom};
-  glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
-  glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
-  glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
-  glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
-                            GL_FALSE, (float*) view);
 }
 
 void drawingBegin() {
@@ -115,7 +117,6 @@ void drawingBegin() {
   glEnable(GL_DEPTH_TEST);
 
   glfwSetKeyCallback(window, keyCallback);
-  glfwSetScrollCallback(window, scrollCallback);
 
   generateShaders();
 
