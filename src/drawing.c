@@ -14,6 +14,7 @@ int windowY = 600;
 float viewf = 0.1; //Move 1 degree for every 10 pixels
 float viewX = 0;
 float viewY = 0;
+float zoom = 3;
 double lastX = 0;
 double lastY = 0;
 enum ControlState {CONTROL_OBJECTS, CONTROL_VIEW} controlState = CONTROL_OBJECTS;
@@ -37,7 +38,7 @@ void cursorPosCallback(GLFWwindow* window, double x, double y)
   viewY = fmin(fmax(viewY + (viewf * (lastY - y)), -90), 90);
   lastX = x;
   lastY = y;
-  vec3 viewVec = {0, 0, 5};
+  vec3 viewVec = {0, 0, zoom};
   glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
   glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
   glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
@@ -67,6 +68,17 @@ void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
       controlState = CONTROL_VIEW;
     }
   }
+}
+
+void scrollCallback(GLFWwindow* window, double x, double y)
+{
+  zoom = fmax(fmin((float) (zoom + (y * 0.1)), 3), 1.2);
+  vec3 viewVec = {0, 0, zoom};
+  glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
+  glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
+  glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
+  glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
+                            GL_FALSE, (float*) view);
 }
 
 void drawingBegin() {
@@ -103,10 +115,11 @@ void drawingBegin() {
   glEnable(GL_DEPTH_TEST);
 
   glfwSetKeyCallback(window, keyCallback);
+  glfwSetScrollCallback(window, scrollCallback);
 
   generateShaders();
 
-  glm_lookat((vec3){0, 0, 5}, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
+  glm_lookat((vec3){0, 0, 3}, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
   glm_perspective(glm_rad(60), ((float) windowX) / ((float) windowY), 0.1, 100,
                   projection);
 
