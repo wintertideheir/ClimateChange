@@ -1,4 +1,4 @@
-env = Environment(CPPPATH='/usr/include')
+env = Environment()
 env.Append(CFLAGS='-std=c11')
 env.VariantDir('bin', 'src', duplicate=0)
 
