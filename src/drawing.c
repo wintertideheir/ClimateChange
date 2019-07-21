@@ -39,8 +39,8 @@ void cursorPosCallback(GLFWwindow* window, double x, double y)
   lastX = x;
   lastY = y;
   vec3 viewVec = {0, 0, zoom};
-  glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
-  glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
+  glm_vec3_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
+  glm_vec3_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
   glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
                             GL_FALSE, (float*) view);
@@ -50,8 +50,8 @@ void scrollCallback(GLFWwindow* window, double x, double y)
 {
   zoom = fmax(fmin((float) (zoom - (y * 0.1)), 3), 1.2);
   vec3 viewVec = {0, 0, zoom};
-  glm_vec_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
-  glm_vec_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
+  glm_vec3_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
+  glm_vec3_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
   glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
                             GL_FALSE, (float*) view);
