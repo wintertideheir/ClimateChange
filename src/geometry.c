@@ -16,8 +16,6 @@ struct Mesh geodesic_icosahedron(int subdivisions) {
   icosahedron.vertices = malloc(sizeof(float) * 3 * icosahedron.vertices_len);
   icosahedron.faces = malloc(sizeof(unsigned int) * 3 * icosahedron.faces_len);
 
-  float golden_ratio = (1 + sqrtf(5)) / 2;
-
   float original_vertices[12][3] =
     {{ 0.000000, -1.000000,  0.000000},
      { 0.723600, -0.447215,  0.525720},
@@ -31,7 +29,6 @@ struct Mesh geodesic_icosahedron(int subdivisions) {
      { 0.276385,  0.447215, -0.850640},
      { 0.894425,  0.447215,  0.000000},
      { 0.000000,  1.000000,  0.000000}};
-
 
   unsigned int original_faces[20][3] =
     {{1,  0,  5},
