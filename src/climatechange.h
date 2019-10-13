@@ -4,9 +4,12 @@
 
 struct Mesh globe;
 
-void drawingBegin();
-void drawingLoop();
-int drawingShouldClose();
-void drawingEnd();
+void drawingSetup();
+void drawingProcess();
+void drawingCleanup();
+void simulationSetup();
+void simulationProcess();
+void simulationCleanup();
 
-void earlyExit();
+int exitRequested();
+void fatalError();

@@ -83,11 +83,11 @@ void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
   }
 }
 
-void drawingBegin() {
+void drawingSetup() {
   if(!glfwInit())
   {
     fprintf(stderr, "GLFW failed to initialize\n");
-    earlyExit();
+    fatalError();
   }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -99,7 +99,7 @@ void drawingBegin() {
   if (window == NULL)
   {
     fprintf(stderr, "GLFW failed to create new window\n");
-    earlyExit();
+    fatalError();
   }
 
   glfwSetWindowSizeLimits(window, windowX, windowY, GLFW_DONT_CARE, GLFW_DONT_CARE);
@@ -111,7 +111,7 @@ void drawingBegin() {
   {
     fprintf(stderr, "GLEW failed to initialize: %s\n",
             glewGetErrorString(glewStatus));
-    earlyExit();
+    fatalError();
   }
 
   glEnable(GL_DEPTH_TEST);
@@ -156,7 +156,7 @@ void drawingBegin() {
   glBindVertexArray(0);
 }
 
-void drawingLoop() {
+void drawingProcess() {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -168,10 +168,10 @@ void drawingLoop() {
   glfwPollEvents();
 }
 
-int drawingShouldClose() {
+int exitRequested() {
   return glfwWindowShouldClose(window);
 }
 
-void drawingEnd() {
+void drawingCleanup() {
   glfwTerminate();
 }

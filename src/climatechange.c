@@ -3,18 +3,19 @@
 #include <stdlib.h>
 
 int main(int argc, char const *argv[]) {
-  globe = geodesic_icosahedron(GLOBE_DETAIL);
-  drawingBegin();
-  while(!drawingShouldClose()) {
-    drawingLoop();
+  simulationSetup();
+  drawingSetup();
+  while(!exitRequested()) {
+    drawingProcess();
+    simulationProcess();
   }
-  drawingEnd();
-  delete_mesh(globe);
+  drawingCleanup();
+  simulationCleanup();
   return EXIT_SUCCESS;
 }
 
-void earlyExit() {
-  drawingEnd();
-  delete_mesh(globe);
+void fatalError() {
+  drawingCleanup();
+  simulationCleanup();
   exit(EXIT_FAILURE);
 }

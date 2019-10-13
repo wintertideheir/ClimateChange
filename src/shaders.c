@@ -22,7 +22,7 @@ GLuint createShader(GLenum type, GLsizei number, const GLchar **code)
     fprintf(stderr, "OpenGL shader failed to compile\n%s", info);
 
 	  glDeleteShader(shader);
-    earlyExit();
+    fatalError();
   }
 
   return shader;
@@ -61,7 +61,7 @@ GLuint createProgram(const GLchar** shader_code,
     glGetProgramInfoLog(shaderProgram, size, NULL, infoLog);
     fprintf(stderr, "OpenGL program failed to link\n%s", infoLog);
 
-    earlyExit();
+    fatalError();
   }
 
   for (int i = 0; i < shader_req_len; i++) {
