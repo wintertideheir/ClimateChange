@@ -1,3 +1,7 @@
+/* Authors: Autumn Ara
+ * Description: Defines top level simulation functions.
+ */
+
 #include "climatechange.h"
 
 void simulationSetup() {

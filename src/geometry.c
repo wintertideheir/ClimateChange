@@ -1,3 +1,7 @@
+/* Authors: Autumn Ara
+ * Description: Defines geometric manipulaton functions.
+ */
+
 #include "geometry.h"
 
 #include <math.h>

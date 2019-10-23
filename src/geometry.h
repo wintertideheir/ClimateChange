@@ -1,3 +1,7 @@
+/* Authors: Autumn Ara
+ * Description: Declares geometric structures and functions.
+ */
+
 struct Mesh {
   int vertices_len;
   int faces_len;

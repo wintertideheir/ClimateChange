@@ -1,3 +1,8 @@
+/* Authors: Autumn Ara
+ * Description: Declare top level drawing functions and
+ *              widely used drawing variables.
+ */
+
 #include "climatechange.h"
 
 #define GLEW_STATIC

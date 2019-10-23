@@ -1,8 +1,8 @@
-#include "drawing.h"
+/* Authors: Autumn Ara
+ * Description: Defines top level drawing functons.
+ */
 
-#define M_PI 3.14159
-#define M_PI_4 (M_PI / 4)
-#define M_PI_2 (M_PI / 2)
+#include "drawing.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -11,17 +11,23 @@
 
 int windowX = 800;
 int windowY = 600;
-float viewf = 0.1; //Move 1 degree for every 10 pixels
-float viewX = 0;
-float viewY = 0;
-float zoom = 3;
-double lastX = 0;
-double lastY = 0;
-enum ControlState {CONTROL_OBJECTS, CONTROL_VIEW} controlState = CONTROL_OBJECTS;
+float viewf = 0.1; // Move 1 degree for every 10 pixels the mouse moves
+float viewX = 0;   // How many degrees around the Y axis of the globe our view is rotated
+float viewY = 0;   // How many degrees around the X axis of the globe our view is rotated
+float zoom = 3;    // The distance of the camera to the globe
+double lastX = 0;  // The X component of the last mouse position
+double lastY = 0;  // The Y component of the last mouse position
+enum ControlState {
+  CONTROL_OBJECTS, // Mouse movement controls objects
+  CONTROL_VIEW     // Mouse movement controls the view
+} controlState = CONTROL_OBJECTS;
 vec3 light = {0, 0, 10};
 
 mat4 view, projection;
 
+/* Description: Callback function for GLFW to properly resize the
+ *              window.
+ */
 void framebufferSizeCallback(GLFWwindow *w, int x, int y)
 {
   windowX = x;
@@ -32,6 +38,10 @@ void framebufferSizeCallback(GLFWwindow *w, int x, int y)
   glViewport(0, 0, x, y);
 }
 
+/* Description: Callback function for GLFW that adjusts the rotation of
+ *              the camera around the globe according to mouse movement
+ * Note: Only active when controlState == CONTROL_VIEW
+ */
 void cursorPosCallback(GLFWwindow* window, double x, double y)
 {
   viewX = fmod((viewX + (viewf * (lastX - x))), 360);
@@ -46,6 +56,11 @@ void cursorPosCallback(GLFWwindow* window, double x, double y)
                             GL_FALSE, (float*) view);
 }
 
+/* Description: Callback function for GLFW that adjusts the distance of
+ *              the camera according to mouse wheel movement (or the
+ *              equivalent thereof).
+ * Note: Only active when controlState == CONTROL_VIEW
+ */
 void scrollCallback(GLFWwindow* window, double x, double y)
 {
   zoom = fmax(fmin((float) (zoom - (y * 0.1)), 3), 1.2);
@@ -57,6 +72,9 @@ void scrollCallback(GLFWwindow* window, double x, double y)
                             GL_FALSE, (float*) view);
 }
 
+/* Description: Callback function for GLFW that switches between
+ *              control states when the TAB key is pressed.
+ */
 void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
 {
   if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
@@ -83,6 +101,8 @@ void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
   }
 }
 
+/* Description: Setup GLFW and OpenGL to render the simulation
+ */ 
 void drawingSetup() {
   if(!glfwInit())
   {
@@ -156,6 +176,9 @@ void drawingSetup() {
   glBindVertexArray(0);
 }
 
+/* Description: Redraw the screen with OpenGL and poll for events with
+ *              GLFW.
+ */
 void drawingProcess() {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -168,6 +191,9 @@ void drawingProcess() {
   glfwPollEvents();
 }
 
+/* Description: Determine whether the program has been asked to close
+ *              based on GLFW.
+ */
 int exitRequested() {
   return glfwWindowShouldClose(window);
 }

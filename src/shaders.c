@@ -1,3 +1,7 @@
+/* Authors: Autumn Ara
+ * Description: Defines shader manipulation functions.
+ */
+
 #include "drawing.h"
 
 #include <stdio.h>
