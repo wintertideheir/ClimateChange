@@ -1,6 +1,5 @@
 /* Authors: Autumn Ara
- * Description: Declare top level control functions,
- *              particularly drawing and simulation functions.
+ * Description: Declare top level control functions.
  */
 
 #include "geometry.h"
@@ -20,9 +19,6 @@ struct Mesh globe;
 void drawingSetup();
 void drawingProcess();
 void drawingCleanup();
-void simulationSetup();
-void simulationProcess();
-void simulationCleanup();
 
 int exitRequested();
 /* Description: Call clean up functions and exit the program when a

@@ -8,26 +8,23 @@
 
 #include <stdlib.h>
 
-/* Description: Main function for the final executable, made of a
- *              simulation and drawing process. The main function,
- *              initializes, loops, and cleans up both processes
- *              through their top level functions.
+/* Description: The main function handles initialization, looping, and
+ *              cleans up through top level functions.
  * Returns: Successful exit code on successful exit
  */
 int main() {
-  simulationSetup();
+  globe = geodesic_icosahedron(GLOBE_DETAIL);
   drawingSetup();
   while(!exitRequested()) {
     drawingProcess();
-    simulationProcess();
   }
   drawingCleanup();
-  simulationCleanup();
+  delete_mesh(globe);
   return EXIT_SUCCESS;
 }
 
 void fatalError() {
   drawingCleanup();
-  simulationCleanup();
+  delete_mesh(globe);
   exit(EXIT_FAILURE);
 }
