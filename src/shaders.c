@@ -2,7 +2,7 @@
  * Description: Defines shader manipulation functions.
  */
 
-#include "drawing.h"
+#include "shader.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,14 +32,8 @@ GLuint createShader(GLenum type, GLsizei number, const GLchar **code)
   return shader;
 };
 
-struct ShaderRequest {
-  GLenum type;
-  int* indicies;
-  int indicies_len;
-};
-
-GLuint createProgram(const GLchar** shader_code,
-                     struct ShaderRequest* shader_req, int shader_req_len) {
+GLuint createProgram(const GLchar** shader_code, struct ShaderRequest* shader_req, int shader_req_len)
+{
   GLuint* shaders = malloc(sizeof(GLuint) * shader_req_len);
 
   GLuint shaderProgram = glCreateProgram();
@@ -73,40 +67,4 @@ GLuint createProgram(const GLchar** shader_code,
   }
 
   return shaderProgram;
-}
-
-void generateShaders()
-{
-  const GLchar* globeVertexShaderCode =
-  "#version 330 core\n"
-  "layout (location = 0) in vec3 pos;\n"
-  "out vec3 outPos;\n"
-  "uniform mat4 view;\n"
-  "uniform mat4 projection;\n"
-  "void main()\n"
-  "{\n"
-  "    outPos = pos;\n"
-  "    gl_Position = projection * view * vec4(pos, 1.0);\n"
-  "}\n";
-
-  const GLchar* globeFragmentShaderCode =
-  "#version 330 core\n"
-  "in vec3 outPos;\n"
-  "out vec4 color;\n"
-  "uniform vec3 light;\n"
-  "void main()\n"
-  "{\n"
-  "    float ambient = 0.1;\n"
-  "    float diffuse = max(dot(outPos, normalize(light - outPos)), 0.0);\n"
-  "    float brightness = ambient + diffuse;\n"
-  "    color = vec4(vec3(brightness), 0.0);\n"
-  "}\n";
-
-  const GLchar* globeProgramCode[] =
-    {globeVertexShaderCode, globeFragmentShaderCode};
-  struct ShaderRequest globeProgramReq[] =
-    {(struct ShaderRequest){GL_VERTEX_SHADER, &(int){0}, 1},
-     (struct ShaderRequest){GL_FRAGMENT_SHADER, &(int){1}, 1}};
-  globeShaderProgram =
-    createProgram(globeProgramCode, globeProgramReq, 2);
 }

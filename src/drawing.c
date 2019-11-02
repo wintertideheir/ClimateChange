@@ -2,12 +2,16 @@
  * Description: Defines top level drawing functons.
  */
 
-#include "drawing.h"
+#include "climatechange.h"
 
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <math.h>
 #include <cglm/cglm.h>
+
+#include "shader.h"
+#include <GLFW/glfw3.h>
 
 #define CAMERA_DISTANCE_MAX 3
 #define CAMERA_DISTANCE_MIN 1.2
@@ -29,6 +33,16 @@ enum ControlState {
 
 vec3 light = {0, 0, 10};
 mat4 view, projection;
+
+GLFWwindow* window;
+
+GLuint globeShaderProgram;
+GLint globe_lightUniform;
+GLint globe_viewUniform;
+GLint globe_projectionUniform;
+unsigned int globe_VBO;
+unsigned int globe_EBO;
+unsigned int globe_VAO;
 
 /* Description: Callback function for GLFW to properly resize the
  *              window.
@@ -139,7 +153,38 @@ void drawingSetup() {
 
   glfwSetKeyCallback(window, keyCallback);
 
-  generateShaders();
+  const GLchar* globeVertexShaderCode =
+  "#version 330 core\n"
+  "layout (location = 0) in vec3 pos;\n"
+  "out vec3 outPos;\n"
+  "uniform mat4 view;\n"
+  "uniform mat4 projection;\n"
+  "void main()\n"
+  "{\n"
+  "    outPos = pos;\n"
+  "    gl_Position = projection * view * vec4(pos, 1.0);\n"
+  "}\n";
+
+  const GLchar* globeFragmentShaderCode =
+  "#version 330 core\n"
+  "in vec3 outPos;\n"
+  "out vec4 color;\n"
+  "uniform vec3 light;\n"
+  "void main()\n"
+  "{\n"
+  "    float ambient = 0.1;\n"
+  "    float diffuse = max(dot(outPos, normalize(light - outPos)), 0.0);\n"
+  "    float brightness = ambient + diffuse;\n"
+  "    color = vec4(vec3(brightness), 0.0);\n"
+  "}\n";
+
+  const GLchar* globeProgramCode[] =
+    {globeVertexShaderCode, globeFragmentShaderCode};
+  struct ShaderRequest globeProgramReq[] =
+    {(struct ShaderRequest){GL_VERTEX_SHADER, &(int){0}, 1},
+     (struct ShaderRequest){GL_FRAGMENT_SHADER, &(int){1}, 1}};
+  globeShaderProgram =
+    createProgram(globeProgramCode, globeProgramReq, 2);
 
   glm_lookat((vec3){0, 0, 3}, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
   glm_perspective(glm_rad(60), ((float) windowX) / ((float) windowY), 0.1, 100,
