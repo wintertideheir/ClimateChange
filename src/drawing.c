@@ -9,20 +9,25 @@
 #include <stdlib.h>
 #include <cglm/cglm.h>
 
+#define CAMERA_DISTANCE_MAX 3
+#define CAMERA_DISTANCE_MIN 1.2
+
 int windowX = 800;
 int windowY = 600;
+double mouseX = 0;
+double mouseY = 0;
+
 float viewf = 0.1; // Move 1 degree for every 10 pixels the mouse moves
-float viewX = 0;   // How many degrees around the Y axis of the globe our view is rotated
-float viewY = 0;   // How many degrees around the X axis of the globe our view is rotated
-float zoom = 3;    // The distance of the camera to the globe
-double lastX = 0;  // The X component of the last mouse position
-double lastY = 0;  // The Y component of the last mouse position
+float globeRotationY = 0;
+float globeRotationX = 0;
+float cameraDistance = 3;
+
 enum ControlState {
   CONTROL_OBJECTS, // Mouse movement controls objects
   CONTROL_VIEW     // Mouse movement controls the view
 } controlState = CONTROL_OBJECTS;
-vec3 light = {0, 0, 10};
 
+vec3 light = {0, 0, 10};
 mat4 view, projection;
 
 /* Description: Callback function for GLFW to properly resize the
@@ -44,13 +49,13 @@ void framebufferSizeCallback(GLFWwindow *w, int x, int y)
  */
 void cursorPosCallback(GLFWwindow* window, double x, double y)
 {
-  viewX = fmod((viewX + (viewf * (lastX - x))), 360);
-  viewY = fmin(fmax(viewY + (viewf * (lastY - y)), -90), 90);
-  lastX = x;
-  lastY = y;
-  vec3 viewVec = {0, 0, zoom};
-  glm_vec3_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
-  glm_vec3_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
+  globeRotationY = fmod((globeRotationY + (viewf * (mouseX - x))), 360);
+  globeRotationX = fmin(fmax(globeRotationX + (viewf * (mouseY - y)), -90), 90);
+  mouseX = x;
+  mouseY = y;
+  vec3 viewVec = {0, 0, cameraDistance};
+  glm_vec3_rotate(viewVec, glm_rad(globeRotationY), (vec3){0, 1, 0});
+  glm_vec3_rotate(viewVec, glm_rad(globeRotationX), (vec3){1, 0, 0});
   glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
                             GL_FALSE, (float*) view);
@@ -63,10 +68,10 @@ void cursorPosCallback(GLFWwindow* window, double x, double y)
  */
 void scrollCallback(GLFWwindow* window, double x, double y)
 {
-  zoom = fmax(fmin((float) (zoom - (y * 0.1)), 3), 1.2);
-  vec3 viewVec = {0, 0, zoom};
-  glm_vec3_rotate(viewVec, glm_rad(viewX), (vec3){0, 1, 0});
-  glm_vec3_rotate(viewVec, glm_rad(viewY), (vec3){1, 0, 0});
+  cameraDistance = fmax(fmin((float) (cameraDistance - (y * 0.1)), CAMERA_DISTANCE_MIN), CAMERA_DISTANCE_MAX);
+  vec3 viewVec = {0, 0, cameraDistance};
+  glm_vec3_rotate(viewVec, glm_rad(globeRotationY), (vec3){0, 1, 0});
+  glm_vec3_rotate(viewVec, glm_rad(globeRotationX), (vec3){1, 0, 0});
   glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
                             GL_FALSE, (float*) view);
@@ -88,11 +93,7 @@ void keyCallback(GLFWwindow* w, int key, int scancode, int action, int mods)
     }
     else
     {
-      double x;
-      double y;
-      glfwGetCursorPos(w, &x, &y);
-      lastX = x;
-      lastY = y;
+      glfwGetCursorPos(w, &mouseX, &mouseY);
       glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
       glfwSetCursorPosCallback(w, cursorPosCallback);
       glfwSetScrollCallback(w, scrollCallback);
