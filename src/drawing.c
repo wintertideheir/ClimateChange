@@ -63,13 +63,13 @@ void framebufferSizeCallback(GLFWwindow *w, int x, int y)
  */
 void cursorPosCallback(GLFWwindow* window, double x, double y)
 {
-  globeRotationY = fmod((globeRotationY + (viewf * (mouseX - x))), 360);
-  globeRotationX = fmin(fmax(globeRotationX + (viewf * (mouseY - y)), -90), 90);
+  globeRotationY = fmod((globeRotationY + (viewf * (mouseX - x) * ((90 - fabs(globeRotationX)) / 90))), 360);
+  globeRotationX = fmin(fmax(globeRotationX + (viewf * (mouseY - y)), -80), 80);
   mouseX = x;
   mouseY = y;
   vec3 viewVec = {0, 0, cameraDistance};
-  glm_vec3_rotate(viewVec, glm_rad(globeRotationY), (vec3){0, 1, 0});
   glm_vec3_rotate(viewVec, glm_rad(globeRotationX), (vec3){1, 0, 0});
+  glm_vec3_rotate(viewVec, glm_rad(globeRotationY), (vec3){0, 1, 0});
   glm_lookat(viewVec, (vec3){0, 0, 0}, (vec3){0, 1, 0}, view);
   glProgramUniformMatrix4fv(globeShaderProgram, globe_viewUniform, 1,
                             GL_FALSE, (float*) view);
