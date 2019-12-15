@@ -3,6 +3,7 @@
  */
 
 #include "shader.h"
+#include "climatechange.h"
 
 #include <stdio.h>
 #include <stdlib.h>
