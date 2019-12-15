@@ -82,7 +82,7 @@ void cursorPosCallback(GLFWwindow* window, double x, double y)
  */
 void scrollCallback(GLFWwindow* window, double x, double y)
 {
-  cameraDistance = fmax(fmin((float) (cameraDistance - (y * 0.1)), CAMERA_DISTANCE_MIN), CAMERA_DISTANCE_MAX);
+  cameraDistance = fmax(fmin((float) (cameraDistance - (y * 0.1)), CAMERA_DISTANCE_MAX), CAMERA_DISTANCE_MIN);
   vec3 viewVec = {0, 0, cameraDistance};
   glm_vec3_rotate(viewVec, glm_rad(globeRotationY), (vec3){0, 1, 0});
   glm_vec3_rotate(viewVec, glm_rad(globeRotationX), (vec3){1, 0, 0});
