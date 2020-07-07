@@ -1,7 +1,19 @@
 # ClimateChange
 
-ClimateChange was developed to better understand ecological dynamics and evolution across large time spans and distances with a varied and evolving climate.
-It is impossible to completely simulate an entire organism, and very difficult to create even a mediocre approximation.
-Therefore, our project focuses on observation of the macroscopic manifestations of life, a task firmly in the responsibility of ecology.
-Evolution without variation is uninteresting, and so climatology and meteorology was brought in to paint a colorful world.
-Our standard for success will be to observe complex phenomena from a simple implementation of foundational concepts.
+ClimateChange was developed to better understand
+ecological dynamics and evolution across large
+time spans and distances with a varied and
+evolving climate. Development is being performed
+in parallel.
+
+* The `master` branch is the root branch for any
+  new development pathways.
+* The `alpha` branch is where the technical part
+  of the program is being developed.
+* The `gh-pahes` branch is for GitHub Pages, and
+  will serve as a temporary development blog.
+
+Development of ClimateChange is partially a
+chance for the developers to learn and relearn
+various skills - therefore it's development will
+be expected to complete late in 2024.
