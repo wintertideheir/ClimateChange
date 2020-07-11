@@ -22,13 +22,15 @@
   <body>
 
     <header class="page-header" role="banner">
-      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
+      <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
       <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
       <a href="{{ site.baseurl }}/index.html" class="btn">About</a>
       {% if site.github.is_project_page %}
         <a href="{{ site.github.repository_url }}" class="btn">GitHub</a>
       {% endif %}
       <a href="{{ site.baseurl }}/posts.html" class="btn">Blog</a>
+      <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));">
+      <h2>{{ page.title }}</h2>
     </header>
 
     <main id="content" class="main-content" role="main">
