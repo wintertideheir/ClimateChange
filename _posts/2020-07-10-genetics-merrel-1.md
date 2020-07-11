@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: newdefault
 title:  Lessons from Introduction to Genetics, by Merrel, Chapter 1
 author: wintertideheir
 tag:    genetics
