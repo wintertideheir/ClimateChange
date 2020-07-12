@@ -44,7 +44,8 @@ ClimateChange's genetic model.
 3. **What and why genotypes and phenotypes?**
    Merrel begins introducing genotypes and
    phenotypes. I can read a lot of hidden complexity
-   between the lines and I wonder how 
+   between the lines and I'm wary about the potential
+   implications here.
 
 Let's see if we can keep these general themes and
 questions as we go forward.
