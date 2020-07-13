@@ -26,7 +26,7 @@ Most of the onus still lies on the user, however.
 The troubling component of Mendel's success is the meticulous records he had to keep.
 Mendel chose traits that were distinct, obvious, and simple in combination.
 That means for a Mendelian experiment to be viable in ClimateChange, phenotypes have to be distinct, obvious, and simple.
-This is the beginning of the hidden complexity I wrote about in [my post for the first chapter.]({% post_url 2020-07-10-genetics-merrel-1.md %})
+This is the beginning of the hidden complexity I wrote about in [my post for the first chapter.]({% post_url 2020-07-10-genetics-merrel-1 %})
 ClimateChange needs a precise way to describe phenotypes across individuals without resorting to an exact speciation framework.
 
 ## The Law of Segregation and Independent Assortment
