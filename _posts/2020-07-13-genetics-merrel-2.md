@@ -29,8 +29,18 @@ That means for a Mendelian experiment to be viable in ClimateChange, phenotypes 
 This is the beginning of the hidden complexity I wrote about in [my post for the first chapter.]({% post_url 2020-07-10-genetics-merrel-1.md %})
 ClimateChange needs a precise way to describe phenotypes across individuals without resorting to an exact speciation framework.
 
-## A Model of the Genome
+## The Law of Segregation and Independent Assortment
 
-## The Law of Segregation
+Mendel hypothesized the existence of independent units of heredity, which we call genes today.
+The Law of segregation states that we have two copies of each gene, of which we pass on only one.
+The best illustration is the reproduction of two identical hybrids.
+The filial generation will have a 1:2:1 genotype ratio of homogeneous individuals for one variant, hybrids, and homogeneous individuals for the other variant.
+If one variant is preferentially expressed over the other, the phenotypic ratio will be 3:1.
 
-## The Law of Independent Assortment
+Although this was difficult for Mendel to discover, we can implement this rather easily in ClimateChange.
+Our model should be intrinsically diploid, and functions on genes should include random chance.
+
+When Mendel began studying multiple traits, he recognized that genes segregate independently.
+In other words, segregation only happens within the genetic, diploid pair.
+This is the law of independent assortment.
+If genes are represented intrinsically as a tuple-like structure, than this law should be easy to follow.
