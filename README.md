@@ -8,9 +8,7 @@ in parallel.
 
 * The `master` branch is the root branch for any
   new development pathways.
-* The `alpha` branch is where the technical part
-  of the program is being developed.
-* The `gh-pahes` branch is for GitHub Pages, and
+* The `gh-pages` branch is for GitHub Pages, and
   will serve as a temporary development blog.
 
 Development of ClimateChange is partially a
